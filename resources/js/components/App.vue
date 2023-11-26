@@ -17,7 +17,7 @@
             <div class="grid grid-cols-4 gap-2 justify-evenly mt-4">
                 <div class="flex" v-for="(image, index) in images" :key="index">
                     <button
-                        class="pr-1 pl-1 border text-white bg-black"
+                        class="border text-white bg-black"
                         @click="deleteImage(image)"
                     >
                         X
@@ -82,14 +82,16 @@ export default {
                 });
         },
         deleteImage(image) {
-            axios
-                .delete("images/delete/" + `${image}`)
-                .then((res) => {
-                    this.getImages();
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
+            if (confirm("Delete")) {
+                axios
+                    .delete("images/delete/" + `${image}`)
+                    .then((res) => {
+                        this.getImages();
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            }
         },
         filepondIntialized() {
             console.log("filepond is ready", this.$refs.pond);
