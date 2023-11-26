@@ -17,7 +17,7 @@
             <div class="grid grid-cols-4 gap-2 justify-evenly mt-4">
                 <div class="flex" v-for="(image, index) in images" :key="index">
                     <button
-                        class="border text-white bg-black"
+                        class="border text-white bg-black p-1"
                         @click="deleteImage(image)"
                     >
                         X
