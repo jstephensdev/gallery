@@ -14,8 +14,14 @@
         </div>
         <div class="mt-8 mb-24">
             <h3 class="text-2xl font-medium text-center">Image Gallery</h3>
-            <div class="grid grid-cols-3 gap-2 justify-evenly mt-4">
-                <div v-for="(image, index) in images" :key="index">
+            <div class="grid grid-cols-4 gap-2 justify-evenly mt-4">
+                <div class="flex" v-for="(image, index) in images" :key="index">
+                    <button
+                        class="pr-1 pl-1 border text-white bg-black"
+                        @click="deleteImage(image)"
+                    >
+                        X
+                    </button>
                     <img :src="'/storage/images/' + image" />
                 </div>
             </div>
@@ -70,6 +76,16 @@ export default {
                 .get("images")
                 .then((response) => {
                     this.images = response.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+        deleteImage(image) {
+            axios
+                .delete("images/delete/" + `${image}`)
+                .then((res) => {
+                    this.getImages();
                 })
                 .catch((error) => {
                     console.log(error);

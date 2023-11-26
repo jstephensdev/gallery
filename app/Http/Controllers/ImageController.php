@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Image;
+use Illuminate\Support\Facades\Storage;
 
 class ImageController extends Controller
 {
@@ -11,7 +12,7 @@ class ImageController extends Controller
         return view('index');
     }
 
-     public function show(){
+    public function show(){
         return Image::latest()->pluck('name')->toArray();
     }
 
@@ -43,5 +44,10 @@ class ImageController extends Controller
 
         // return image model to front end for viewing
         return $image;
+    }
+
+       public function destroy($image){
+        $image = Image::where('name', '=', $image)->firstOrFail();
+        $image->delete();
     }
 }
