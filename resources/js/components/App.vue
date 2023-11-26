@@ -9,6 +9,7 @@
                 @init="filepondIntialized"
                 accepted-file-types="image/*"
                 @processfile="handleProcessedFile"
+                max-file-size="1MB"
             />
         </div>
         <div class="mt-8 mb-24">
@@ -28,6 +29,7 @@ import vueFilePond, { setOptions } from "vue-filepond";
 
 // Import plugins
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.esm.js";
+import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.esm.js";
 
 // Import styles
 import "filepond/dist/filepond.min.css";
@@ -46,7 +48,10 @@ setOptions({
 });
 
 // Create FilePond component
-const FilePond = vueFilePond(FilePondPluginFileValidateType);
+const FilePond = vueFilePond(
+    FilePondPluginFileValidateType,
+    FilePondPluginFileValidateSize
+);
 export default {
     components: {
         FilePond,
