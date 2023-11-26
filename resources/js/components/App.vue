@@ -1,26 +1,49 @@
 <template>
     <div class="mt-4">
-        <file-pond
-            name="image"
-            ref="pond"
-            label-idle="Click to choose image, or
+        <div>
+            <file-pond
+                name="image"
+                ref="pond"
+                label-idle="Click to choose image, or
         drag here..."
-            server="/upload"
-            @init="filepondIntialized"
-            accepted-file-types="image/*"
-        />
+                @init="filepondIntialized"
+                accepted-file-types="image/*"
+                @processfile="handleProcessedFile"
+            />
+        </div>
+        <div class="mt-8 mb-24">
+            <h3 class="text-2xl font-medium text-center">Image Gallery</h3>
+            <div class="grid grid-cols-3 gap-2 justify-evenly mt-4">
+                <div v-for="(image, index) in images" :key="index">
+                    <img :src="'/storage/images/' + image" />
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
 // Import FilePond
-import vueFilePond from "vue-filepond";
+import vueFilePond, { setOptions } from "vue-filepond";
 
 // Import plugins
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.esm.js";
 
 // Import styles
 import "filepond/dist/filepond.min.css";
+
+setOptions({
+    server: {
+        process: {
+            url: "./upload",
+            headers: {
+                "x-CSRF-TOKEN": document.head.querySelector(
+                    'meta[name="csrf_token"]'
+                ).content,
+            },
+        },
+    },
+});
 
 // Create FilePond component
 const FilePond = vueFilePond(FilePondPluginFileValidateType);
@@ -29,11 +52,34 @@ export default {
         FilePond,
     },
     data() {
-        return {};
+        return {
+            images: [],
+        };
+    },
+    mounted() {
+        this.getImages();
     },
     methods: {
+        getImages() {
+            axios
+                .get("images")
+                .then((response) => {
+                    this.images = response.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
         filepondIntialized() {
             console.log("filepond is ready", this.$refs.pond);
+        },
+        handleProcessedFile(error, file) {
+            if (error) {
+                console.log(error);
+                return;
+            }
+
+            this.getImages();
         },
     },
 };

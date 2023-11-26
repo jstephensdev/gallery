@@ -4,6 +4,7 @@
 3. npm install --save-dev vue@next
 4. npm install vue-filepond filepond --save
 5. npm install --save-dev filepond-plugin-file-validate-type
+6. php artisan storage:link
 
 ## Steps to start:
 1. php artisan serve
