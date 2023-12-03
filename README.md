@@ -1,23 +1,31 @@
 Based on laracast "Advanced image uploading with vue and laravel"
 
-## Steps to creating project:
-1. php artisan make:model Image --migration 
-2. php artisan migrate
-3. npm install --save-dev vue@next
-4. npm install vue-filepond filepond --save
-5. npm install --save-dev filepond-plugin-file-validate-type
-6. php artisan storage:link
-7. npm install --save-dev filepond-plugin-file-validate-size
+## Technology Used:
+
+1. Laravel
+2. Vue
+3. Mysql
+4. Filepond ( https://pqina.nl/filepond/docs/getting-started/ )
 
 ## Steps to start:
-1. php artisan serve
-2. npm run dev
 
-## features:
+1. npm install
+2. in two seperate terminals run: 
+   1. php artisan serve
+   2. npm run dev
 
-## todo features:
+## Features:
+
+1. connects to a mysql database
+2. upload images ( png, jpeg, etc)
+3. view all images uploaded
+
+## Things to Improve or Todo:
+
+1. pagination in the gallery view
 
 ## Resources:
+
 1. https://pqina.nl/filepond/docs/
 2. https://pqina.nl/filepond/docs/getting-started/installation/vue/
 3. https://laravel.com/docs/10.x/vite#:~:text=Choosing%20Between%20Vite%20And%20Laravel,when%20building%20rich%20JavaScript%20applications
