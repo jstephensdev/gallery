@@ -25,18 +25,17 @@
                     <img :src="'/storage/images/' + image.name" />
                 </div>
             </div>
-            <!-- <div class="flex mt-8 justify-evenly">
+            <div class="flex mt-8 justify-evenly">
                 <span>{{ `page ${current_page} of ${last_page}` }}</span>
-                <a :href="previousUrl">
+                <div class="flex space-around items-center">
                     <button
                         :disabled="isPreviousDisabled"
                         @click="handlePreviousPage"
-                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
                     >
                         Previous
                     </button>
-                </a>
-                <a :href="nextUrl">
+
                     <button
                         :disabled="isNextDisabled"
                         @click="handleNextPage"
@@ -44,8 +43,8 @@
                     >
                         Next
                     </button>
-                </a>
-            </div> -->
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -90,26 +89,20 @@ export default {
             images: {},
             isPreviousDisabled: false,
             isNextDisabled: false,
-            prev_page_url: '',
-            next_page_url:  ''
+            prev_page_url: "",
+            next_page_url: "",
         };
     },
     mounted() {
         this.getImages();
     },
     computed: {
-        // isPreviousDisabled() {
-        //     return this.current_page <= 1;
-        // },
-        // isNextDisabled() {
-        //     return this.current_page === this.last_page;
-        // },
-        // previousUrl() {
-        //     return this.prev_page_url;
-        // },
-        // nextUrl() {
-        //     return this.next_page_url;
-        // },
+        isPreviousDisabled() {
+            return this.current_page <= 1;
+        },
+        isNextDisabled() {
+            return this.current_page > this.last_page;
+        },
     },
     methods: {
         getImages() {
@@ -117,10 +110,11 @@ export default {
                 .get("images")
                 .then((response) => {
                     console.log(response.data);
-                    // this.current_page = response.data.from;
-                    // this.last_page = response.data.last_page;
+                    this.prev_page_url = response.data.prev_page_url;
+                    this.next_page_url = response.data.next_page_url;
+                    this.current_page = response.data.from;
+                    this.last_page = response.data.last_page;
                     this.images = response.data.data;
-                    // this.links = response.data.links;
                 })
                 .catch((error) => {
                     console.log(error);
@@ -138,12 +132,35 @@ export default {
                     });
             }
         },
-        // handlePreviousPage() {
-        //     this.current_page = this.current_page - 1;
-        // },
-        // handleNextPage() {
-        //     this.current_page = this.current_page + 1;
-        // },
+        handlePreviousPage() {
+            axios
+                .get(this.prev_page_url)
+                .then((response) => {
+                    console.log(response);
+                    this.images = response.data.data;
+                    this.prev_page_url = response.data.prev_page_url;
+                    this.next_page_url = response.data.next_page_url;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+            this.current_page = this.current_page - 1;
+        },
+        handleNextPage() {
+            axios
+                .get(this.next_page_url)
+                .then((response) => {
+                    console.log(response);
+                    this.images = response.data.data;
+                    this.prev_page_url = response.data.prev_page_url;
+                    this.next_page_url = response.data.next_page_url;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+
+            this.current_page = this.current_page + 1;
+        },
         filepondIntialized() {
             console.log("filepond is ready", this.$refs.pond);
         },
