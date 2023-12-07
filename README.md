@@ -23,6 +23,7 @@ Based on laracast "Advanced image uploading with vue and laravel". Uploads image
 1. connects to a mysql database
 2. upload images ( png, jpeg, etc)
 3. view all images uploaded
+4. delete any image uploaded
 
 ## Things to Improve or Todo:
 
