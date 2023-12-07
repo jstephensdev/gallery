@@ -101,7 +101,7 @@ export default {
             return this.current_page <= 1;
         },
         isNextDisabled() {
-            return this.current_page > this.last_page;
+            return this.current_page === this.last_page;
         },
     },
     methods: {
@@ -109,7 +109,6 @@ export default {
             axios
                 .get("images")
                 .then((response) => {
-                    console.log(response.data);
                     this.prev_page_url = response.data.prev_page_url;
                     this.next_page_url = response.data.next_page_url;
                     this.current_page = response.data.from;
@@ -136,7 +135,6 @@ export default {
             axios
                 .get(this.prev_page_url)
                 .then((response) => {
-                    console.log(response);
                     this.images = response.data.data;
                     this.prev_page_url = response.data.prev_page_url;
                     this.next_page_url = response.data.next_page_url;
@@ -150,7 +148,6 @@ export default {
             axios
                 .get(this.next_page_url)
                 .then((response) => {
-                    console.log(response);
                     this.images = response.data.data;
                     this.prev_page_url = response.data.prev_page_url;
                     this.next_page_url = response.data.next_page_url;
