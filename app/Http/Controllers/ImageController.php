@@ -8,11 +8,11 @@ use App\Models\Image;
 class ImageController extends Controller
 {
     public function index(){
-        return view('index');
+        return view('index', ['images', Image::paginate()]);
     }
 
     public function show(){
-        return Image::latest()->pluck('name')->toArray();
+        return Image::paginate(8);
     }
 
      public function store(Request $request){

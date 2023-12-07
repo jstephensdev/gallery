@@ -13,6 +13,7 @@ Based on laracast "Advanced image uploading with vue and laravel"
 2. in two seperate terminals run: 
    1. php artisan serve
    2. npm run dev
+3. navigate to http://127.0.0.1:8000
 
 ## Features:
 

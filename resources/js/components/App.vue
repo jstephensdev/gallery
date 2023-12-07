@@ -17,14 +17,35 @@
             <div class="grid grid-cols-4 gap-2 justify-evenly mt-4">
                 <div class="flex" v-for="(image, index) in images" :key="index">
                     <button
-                        class="border text-white bg-black p-1"
+                        class="p-1 mt-0 pt-0 font-bold absolute hover:bg-blue-700"
                         @click="deleteImage(image)"
                     >
                         X
                     </button>
-                    <img :src="'/storage/images/' + image" />
+                    <img :src="'/storage/images/' + image.name" />
                 </div>
             </div>
+            <!-- <div class="flex mt-8 justify-evenly">
+                <span>{{ `page ${current_page} of ${last_page}` }}</span>
+                <a :href="previousUrl">
+                    <button
+                        :disabled="isPreviousDisabled"
+                        @click="handlePreviousPage"
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    >
+                        Previous
+                    </button>
+                </a>
+                <a :href="nextUrl">
+                    <button
+                        :disabled="isNextDisabled"
+                        @click="handleNextPage"
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    >
+                        Next
+                    </button>
+                </a>
+            </div> -->
         </div>
     </div>
 </template>
@@ -64,18 +85,42 @@ export default {
     },
     data() {
         return {
-            images: [],
+            current_page: 0,
+            last_page: 0,
+            images: {},
+            isPreviousDisabled: false,
+            isNextDisabled: false,
+            prev_page_url: '',
+            next_page_url:  ''
         };
     },
     mounted() {
         this.getImages();
+    },
+    computed: {
+        // isPreviousDisabled() {
+        //     return this.current_page <= 1;
+        // },
+        // isNextDisabled() {
+        //     return this.current_page === this.last_page;
+        // },
+        // previousUrl() {
+        //     return this.prev_page_url;
+        // },
+        // nextUrl() {
+        //     return this.next_page_url;
+        // },
     },
     methods: {
         getImages() {
             axios
                 .get("images")
                 .then((response) => {
-                    this.images = response.data;
+                    console.log(response.data);
+                    // this.current_page = response.data.from;
+                    // this.last_page = response.data.last_page;
+                    this.images = response.data.data;
+                    // this.links = response.data.links;
                 })
                 .catch((error) => {
                     console.log(error);
@@ -85,7 +130,7 @@ export default {
             if (confirm("Delete")) {
                 axios
                     .delete("images/delete/" + `${image}`)
-                    .then((res) => {
+                    .then(() => {
                         this.getImages();
                     })
                     .catch((error) => {
@@ -93,10 +138,16 @@ export default {
                     });
             }
         },
+        // handlePreviousPage() {
+        //     this.current_page = this.current_page - 1;
+        // },
+        // handleNextPage() {
+        //     this.current_page = this.current_page + 1;
+        // },
         filepondIntialized() {
             console.log("filepond is ready", this.$refs.pond);
         },
-        handleProcessedFile(error, file) {
+        handleProcessedFile(error) {
             if (error) {
                 console.log(error);
                 return;
